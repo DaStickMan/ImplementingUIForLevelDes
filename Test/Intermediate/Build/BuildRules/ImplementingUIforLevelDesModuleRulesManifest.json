@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"/Users/filipe.otero/Documents/Unreal Projects/ImplementingUIforLevelDes/Source/ImplementingUIforLevelDes/ImplementingUIforLevelDes.Build.cs",
+		"/Users/filipe.otero/Documents/Unreal Projects/ImplementingUIforLevelDes/Source/ImplementingUIforLevelDes.Target.cs",
+		"/Users/filipe.otero/Documents/Unreal Projects/ImplementingUIforLevelDes/Source/ImplementingUIforLevelDesEditor.Target.cs"
+	],
+	"EngineVersion": "5.1.1"
+}

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "ImplementingUIforLevelDes",
+			"Path": "/Users/filipe.otero/Documents/Unreal Projects/ImplementingUIforLevelDes/Source/ImplementingUIforLevelDes.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "ImplementingUIforLevelDesEditor",
+			"Path": "/Users/filipe.otero/Documents/Unreal Projects/ImplementingUIforLevelDes/Source/ImplementingUIforLevelDesEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
