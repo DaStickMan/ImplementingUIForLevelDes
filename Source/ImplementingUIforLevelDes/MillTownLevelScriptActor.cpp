@@ -67,11 +67,13 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap(AActor* OverlappedActor, AAc
 
 void AMillTownLevelScriptActor::OnActorBeginOverlap2(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (PlayerUI && ObjectiveMarkerBridge)
+	if (PlayerUI && ObjectiveMarkerBridge2)
 	{
 		FTimerHandle TimerHandle;
 
 		UE_LOG(LogTemp, Warning, TEXT("Overlap detected with: %s"), *PlayerUI->GetName());
+
+		ObjectiveMarkerBridge->Enabled = false;
 
 		PlayerUI->ShowNarrative(true, "The bridge across the river is retracted. Perhaps if I can reach it I can find a way to extend the bridge.", 8);
 		GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
@@ -85,10 +87,10 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap2(AActor* OverlappedActor, AA
 
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
-				PlayerUI->SetNewObjective("Reach the bridge", 1);
+				PlayerUI->SetNewObjective("Extend the bridge", 1);
 				PlayerUI->ToggleObjective(1, false, false);
 
-				ObjectiveMarkerBridge->Enabled = true;
+				ObjectiveMarkerBridge2->Enabled = true;
 			}, 3, false);
 	}
 }

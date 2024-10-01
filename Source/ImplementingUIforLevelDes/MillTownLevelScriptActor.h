@@ -49,4 +49,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerBridge;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
+	AObjectiveMarker* ObjectiveMarkerBridge2;
 };
