@@ -35,11 +35,17 @@ private:
 	UFUNCTION()
 	void OnActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
+	UFUNCTION()
+	void OnActorBeginOverlap2(AActor* OverlappedActor, AActor* OtherActor);
+
 	void HideNarrativeText();
 
 	// Reference to the TriggerBox in the level
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
 	ATriggerBox* TriggerBox; // Make sure you set this in the editor
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
+	ATriggerBox* TriggerBox2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerBridge;
