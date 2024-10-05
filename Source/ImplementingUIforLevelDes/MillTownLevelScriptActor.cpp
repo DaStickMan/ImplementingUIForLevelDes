@@ -49,6 +49,15 @@ void AMillTownLevelScriptActor::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("Object is pending kill, cannot bind delegate!"));
 		}		
 	}
+
+	if (DoorInteractive)
+	{
+		DoorInteractive->OnDoorInteractLocked.AddDynamic(this, &AMillTownLevelScriptActor::OnDoorInteractHandler);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The DoorInteractive are not set in the editor!"));
+	}
 }
 
 void AMillTownLevelScriptActor::OnBridgeControllNoPower()
@@ -146,6 +155,23 @@ void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
 	PlayerUI->ToggleObjective(1, true, true);
 	PlayerUI->SetNewObjective("Find the GEAR WHEEL", 1);
 	GearMachineInspected = true;
+}
 
+void AMillTownLevelScriptActor::OnDoorInteractHandler()
+{
+	if (GearMachineInspected)
+	{
+		PlayerUI->CompleteObjective(1);
+		PlayerUI->ToggleObjective(1, true, true);
+		PlayerUI->SetNewObjective("Reach the TOWN HALL", 1);
+		PlayerUI->ShowNarrative(true, "The Foreman locked the GEAR WHEEL here in this workshop long ago. If he went to the Town Hall, maybe I can find his key there.", 8);
+		ObjectiveMarkerTownHill->Enabled = true;
+		ObjectiveMarkerTownHill->DisabledOnReach = true;
+		DoorLoadingDock->CallUnlockDoor();
+		DoorLoadingDock->CallOpenDoorExternal();
+	}
+	else 
+	{
 
+	}
 }

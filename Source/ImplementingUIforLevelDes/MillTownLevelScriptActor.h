@@ -6,6 +6,7 @@
 #include "InitViewportCharacter.h"
 #include "UserWidgetPlayerUI.h"
 #include "InteractiveSwitchActor.h"
+#include "ActorDoor.h"
 #include "ObjectiveMarker.h"
 #include <Engine/TriggerBox.h>
 #include "Engine/LevelScriptActor.h"
@@ -48,6 +49,9 @@ private:
 	UFUNCTION()
 	void OnGearMachineInspectedHandler();
 
+	UFUNCTION()
+	void OnDoorInteractHandler();
+
 	// Reference to the TriggerBox in the level
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
 	ATriggerBox* TriggerBox; // Make sure you set this in the editor
@@ -64,9 +68,15 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerGearMachine;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
+	AObjectiveMarker* ObjectiveMarkerTownHill;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GearMachine", meta = (AllowPrivateAccess = "true"))
 	AInteractiveSwitchActor* GearMachine;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door", meta = (AllowPrivateAccess = "true"))
-	AActor* DoorInteractive;
+	AActorDoor* DoorInteractive;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door", meta = (AllowPrivateAccess = "true"))
+	AActorDoor* DoorLoadingDock;
 };
