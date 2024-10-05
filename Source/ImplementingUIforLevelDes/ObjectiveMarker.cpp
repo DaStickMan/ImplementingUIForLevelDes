@@ -48,9 +48,6 @@ void AObjectiveMarker::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AA
     if (NextObjectMarker)
     {
         NextObjectMarker->Enabled = true;
-        //NextObjectMarker->SetIsTemporarilyHiddenInEditor(false);
     }
-    //SetIsTemporarilyHiddenInEditor(Enabled && DisabledOnReach);
-    //print(GetName());
 }
 

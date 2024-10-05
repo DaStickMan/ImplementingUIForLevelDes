@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InitViewportCharacter.h"
 #include "UserWidgetPlayerUI.h"
+#include "InteractiveSwitchActor.h"
 #include "ObjectiveMarker.h"
 #include <Engine/TriggerBox.h>
 #include "Engine/LevelScriptActor.h"
@@ -25,10 +26,14 @@ private:
 	void InitializeUI();
 	void OBJ_FindAWayAcross();
 	FTimerHandle MemberTimerHandle;
+	bool GearMachineInspected;
 
 public:
 	
 	void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable)
+	void OnBridgeControllNoPower();
 
 private:
 	// Function to handle overlap events
@@ -39,6 +44,9 @@ private:
 	void OnActorBeginOverlap2(AActor* OverlappedActor, AActor* OtherActor);
 
 	void HideNarrativeText();
+
+	UFUNCTION()
+	void OnGearMachineInspectedHandler();
 
 	// Reference to the TriggerBox in the level
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
@@ -52,4 +60,13 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerBridge2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
+	AObjectiveMarker* ObjectiveMarkerGearMachine;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GearMachine", meta = (AllowPrivateAccess = "true"))
+	AInteractiveSwitchActor* GearMachine;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door", meta = (AllowPrivateAccess = "true"))
+	AActor* DoorInteractive;
 };

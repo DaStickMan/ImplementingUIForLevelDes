@@ -8,6 +8,7 @@ void AMillTownLevelScriptActor::InitializeUI()
 {
 	PlayerCharacter = Cast<AInitViewportCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	PlayerUI = PlayerCharacter->InitViewportAndReturn();
+	GearMachineInspected = false;
 	//Calls a new objective after 3s
 	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::OBJ_FindAWayAcross, 3.0f, false);	
 }
@@ -35,6 +36,39 @@ void AMillTownLevelScriptActor::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The TriggerBoxes are not set in the editor!"));
 	}
+
+	if (GearMachine)
+	{
+		if (!GearMachine->IsPendingKill()) // Check if the object is valid
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Binding Gear Machine"));
+			GearMachine->OnGearMachineInspected.AddDynamic(this, &AMillTownLevelScriptActor::OnGearMachineInspectedHandler);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Object is pending kill, cannot bind delegate!"));
+		}		
+	}
+}
+
+void AMillTownLevelScriptActor::OnBridgeControllNoPower()
+{
+	if (PlayerUI && ObjectiveMarkerGearMachine)
+	{
+		PlayerUI->ToggleObjective(1, true, true);
+		ObjectiveMarkerBridge2->Enabled = false;
+
+		//delay 2s
+
+		PlayerUI->ShowNarrative(true, "The Bridge Controls have no power. The Mill's water wheel can provide power, but I'll need to restart the Mill Machinery.", 8);
+
+		//delay 5s
+
+		PlayerUI->SetNewObjective("Restart the Mill machinary", 1);
+		PlayerUI->ToggleObjective(1, false, true);
+		ObjectiveMarkerGearMachine->Enabled = true;
+		GearMachine->EnableInteraction(true);
+	}
 }
 
 void AMillTownLevelScriptActor::OnActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
@@ -43,7 +77,7 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap(AActor* OverlappedActor, AAc
 	{
 		FTimerHandle TimerHandle;
 
-		UE_LOG(LogTemp, Warning, TEXT("Overlap detected with: %s"), *PlayerUI->GetName());
+		TriggerBox->OnActorBeginOverlap.Clear();
 
 		PlayerUI->ShowNarrative(true, "The bridge across the river is retracted. Perhaps if I can reach it I can find a way to extend the bridge.", 8);
 		GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
@@ -71,7 +105,7 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap2(AActor* OverlappedActor, AA
 	{
 		FTimerHandle TimerHandle;
 
-		UE_LOG(LogTemp, Warning, TEXT("Overlap detected with: %s"), *PlayerUI->GetName());
+		TriggerBox2->OnActorBeginOverlap.Clear();
 
 		ObjectiveMarkerBridge->Enabled = false;
 
@@ -102,4 +136,16 @@ void AMillTownLevelScriptActor::HideNarrativeText()
 		PlayerUI->HideNarrative();
 		GetWorldTimerManager().ClearTimer(MemberTimerHandle);
 	}
+}
+
+void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
+{
+	ObjectiveMarkerGearMachine->Enabled = false;
+		
+	PlayerUI->ShowNarrative(true, "The drive shaft of this machine produces power for the entire mill, but the GEAR WHEEL is missing.", 8);
+	PlayerUI->ToggleObjective(1, true, true);
+	PlayerUI->SetNewObjective("Find the GEAR WHEEL", 1);
+	GearMachineInspected = true;
+
+
 }

@@ -11,8 +11,6 @@ void APlayerUI::BeginPlay()
 	InitializeUIRefs();
 }
 
-
-
 void APlayerUI::InitializeUIRefs()
 {
 	UWorld* World = GetWorld();
@@ -54,13 +52,7 @@ void APlayerUI::DrawObjectiveMarkers()
 				screenPosX = FMath::Clamp(ScreenPosition.X, MinScreenPosition, sizeX * 0.95);
 				screenPosY = FMath::Clamp(ScreenPosition.Y, MinScreenPosition, sizeY * 0.9);
 
-				/*screenPosX = ScreenPosition.X;
-				screenPosY = ScreenPosition.Y;*/
-
-				SetMarkerImage();
-				
-				//UE_LOG(LogTemp, Warning, TEXT("The Actor's name is %f %f %f %f %d %d"), screenPosX, screenPosY, ObjMarkerScale, ObjMarkerRotation, ScreenPosition.X, ScreenPosition.Y);
-
+				SetMarkerImage();			
 
 				DrawTexture(CurrentTexture, screenPosX, screenPosY, 250, 250, 0, 0, 1, 1, FLinearColor::White, BLEND_Translucent, ObjMarkerScale, false, ObjMarkerRotation);
 			}
@@ -72,9 +64,6 @@ void APlayerUI::SetMarkerImage()
 {
 	if (IsOffScreenHorizontal())
 	{
-
-		UE_LOG(LogTemp, Warning, TEXT("OffScreen Horizontal %f"), screenPosX);
-
 		CurrentTexture = WaypointArrow;
 		if (screenPosX <= MinScreenPosition)
 		{
@@ -90,8 +79,6 @@ void APlayerUI::SetMarkerImage()
 		CurrentTexture = WaypointTexture;
 		if (IsOffScreenVertical())
 		{
-			UE_LOG(LogTemp, Error, TEXT("OffScreen Vertical %f"), screenPosY);
-
 			CurrentTexture = WaypointArrow;
 			if (screenPosY <= MinScreenPosition)
 			{
