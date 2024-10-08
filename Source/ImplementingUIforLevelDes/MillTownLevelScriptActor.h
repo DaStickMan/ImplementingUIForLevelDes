@@ -7,6 +7,7 @@
 #include "UserWidgetPlayerUI.h"
 #include "InteractiveSwitchActor.h"
 #include "ActorDoor.h"
+#include "KeyParentActor.h"
 #include "ObjectiveMarker.h"
 #include <Engine/TriggerBox.h>
 #include "Engine/LevelScriptActor.h"
@@ -44,13 +45,22 @@ private:
 	UFUNCTION()
 	void OnActorBeginOverlap2(AActor* OverlappedActor, AActor* OtherActor);
 
+	UFUNCTION()
+	void OnActorBeginOverlap3(AActor* OverlappedActor, AActor* OtherActor);
+
+	UFUNCTION()
+	void OnActorBeginOverlap4(AActor* OverlappedActor, AActor* OtherActor);
+
 	void HideNarrativeText();
 
 	UFUNCTION()
 	void OnGearMachineInspectedHandler();
 
 	UFUNCTION()
-	void OnDoorInteractHandler();
+	void OnDoorInteractHandler();	
+	
+	UFUNCTION()
+	void OnCrowbarTakenHandler();
 
 	// Reference to the TriggerBox in the level
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
@@ -58,6 +68,12 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
 	ATriggerBox* TriggerBox2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
+	ATriggerBox* TriggerBox3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
+	ATriggerBox* TriggerBox4;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerBridge;
@@ -71,6 +87,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerTownHill;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
+	AObjectiveMarker* ObjectiveMarkerTownHill2;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GearMachine", meta = (AllowPrivateAccess = "true"))
 	AInteractiveSwitchActor* GearMachine;
 
@@ -79,4 +98,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door", meta = (AllowPrivateAccess = "true"))
 	AActorDoor* DoorLoadingDock;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crowbar", meta = (AllowPrivateAccess = "true"))
+	AKeyParentActor* CrowbarInteractive;
 };

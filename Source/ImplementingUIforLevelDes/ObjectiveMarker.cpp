@@ -48,6 +48,7 @@ void AObjectiveMarker::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AA
     if (NextObjectMarker)
     {
         NextObjectMarker->Enabled = true;
+        Enabled = false;
     }
 }
 

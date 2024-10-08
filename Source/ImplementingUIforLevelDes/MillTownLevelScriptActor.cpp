@@ -26,11 +26,13 @@ void AMillTownLevelScriptActor::OBJ_FindAWayAcross()
 void AMillTownLevelScriptActor::BeginPlay()
 {
 	InitializeUI();
-	if (TriggerBox && TriggerBox2)
+	if (TriggerBox && TriggerBox2 && TriggerBox3)
 	{
 		// Bind the overlap event
 		TriggerBox->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap);
 		TriggerBox2->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap2);
+		TriggerBox2->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap3);
+		TriggerBox4->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap4);
 	}
 	else
 	{
@@ -57,6 +59,15 @@ void AMillTownLevelScriptActor::BeginPlay()
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The DoorInteractive are not set in the editor!"));
+	}
+
+	if (CrowbarInteractive)
+	{
+		CrowbarInteractive->OnCrowbarTaken.AddDynamic(this, &AMillTownLevelScriptActor::OnCrowbarTakenHandler);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The CrowbarInteractive are not set in the editor!"));
 	}
 }
 
@@ -138,6 +149,35 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap2(AActor* OverlappedActor, AA
 	}
 }
 
+void AMillTownLevelScriptActor::OnActorBeginOverlap3(AActor* OverlappedActor, AActor* OtherActor)
+{
+	if (PlayerUI)
+	{
+		PlayerUI->ToggleObjective(1, true, true);
+
+		//delay 2s
+
+		PlayerUI->SetNewObjective("Find a way inside the TOWN HALL", 1);
+		PlayerUI->ToggleObjective(1, false, false);
+	}
+}
+
+void AMillTownLevelScriptActor::OnActorBeginOverlap4(AActor* OverlappedActor, AActor* OtherActor)
+{
+	if (PlayerUI && ObjectiveMarkerTownHill2)
+	{
+
+		PlayerUI->CompleteObjective(1);
+		ObjectiveMarkerTownHill2->Enabled = false;
+
+		//delay 3s
+
+		PlayerUI->ToggleObjective(1, true, true);
+		PlayerUI->SetNewObjective("Search the TOWN HALL", 1);
+		PlayerUI->ToggleObjective(1, false, false);
+	}
+}
+
 void AMillTownLevelScriptActor::HideNarrativeText()
 {
 	if (PlayerUI)
@@ -152,6 +192,7 @@ void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
 	ObjectiveMarkerGearMachine->Enabled = false;
 		
 	PlayerUI->ShowNarrative(true, "The drive shaft of this machine produces power for the entire mill, but the GEAR WHEEL is missing.", 8);
+	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
 	PlayerUI->ToggleObjective(1, true, true);
 	PlayerUI->SetNewObjective("Find the GEAR WHEEL", 1);
 	GearMachineInspected = true;
@@ -165,6 +206,7 @@ void AMillTownLevelScriptActor::OnDoorInteractHandler()
 		PlayerUI->ToggleObjective(1, true, true);
 		PlayerUI->SetNewObjective("Reach the TOWN HALL", 1);
 		PlayerUI->ShowNarrative(true, "The Foreman locked the GEAR WHEEL here in this workshop long ago. If he went to the Town Hall, maybe I can find his key there.", 8);
+		GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
 		ObjectiveMarkerTownHill->Enabled = true;
 		ObjectiveMarkerTownHill->DisabledOnReach = true;
 		DoorLoadingDock->CallUnlockDoor();
@@ -174,4 +216,18 @@ void AMillTownLevelScriptActor::OnDoorInteractHandler()
 	{
 
 	}
+}
+
+void AMillTownLevelScriptActor::OnCrowbarTakenHandler()
+{
+	PlayerUI->ToggleObjective(1, true, true);
+	//delay 1s
+
+	PlayerUI->ShowNarrative(true, "No sign of Grundy here in the Town Hall, but I could use this crowbar to enter those houses I passed on the way up the hill.Maybe Grundy lived in one of them and left his Workshop key there.", 8);
+	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
+
+	//delay 3s
+
+	PlayerUI->SetNewObjective("Search houses for the Workshop key", 1);
+	PlayerUI->ToggleObjective(1, false, false);
 }
