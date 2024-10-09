@@ -26,12 +26,12 @@ void AMillTownLevelScriptActor::OBJ_FindAWayAcross()
 void AMillTownLevelScriptActor::BeginPlay()
 {
 	InitializeUI();
-	if (TriggerBox && TriggerBox2 && TriggerBox3)
+	if (TriggerBox && TriggerBox2 && TriggerBox3 && TriggerBox4)
 	{
 		// Bind the overlap event
 		TriggerBox->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap);
 		TriggerBox2->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap2);
-		TriggerBox2->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap3);
+		TriggerBox3->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap3);
 		TriggerBox4->OnActorBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnActorBeginOverlap4);
 	}
 	else
