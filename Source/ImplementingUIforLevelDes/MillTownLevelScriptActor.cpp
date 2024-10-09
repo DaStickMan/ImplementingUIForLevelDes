@@ -69,6 +69,15 @@ void AMillTownLevelScriptActor::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The CrowbarInteractive are not set in the editor!"));
 	}
+
+	if (KeyInteractive)
+	{
+		KeyInteractive->OnKeysTaken.AddDynamic(this, &AMillTownLevelScriptActor::OnKeyTakenHandler);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The KeyInteractive are not set in the editor!"));
+	}
 }
 
 void AMillTownLevelScriptActor::OnBridgeControllNoPower()
@@ -231,3 +240,19 @@ void AMillTownLevelScriptActor::OnCrowbarTakenHandler()
 	PlayerUI->SetNewObjective("Search houses for the Workshop key", 1);
 	PlayerUI->ToggleObjective(1, false, false);
 }
+
+void AMillTownLevelScriptActor::OnKeyTakenHandler()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Chamou"));
+
+	PlayerUI->CompleteObjective(1);
+
+	//delay 3s
+	KeyFound = true;
+	PlayerUI->ToggleObjective(1, true, true);
+	PlayerUI->SetNewObjective("Return to the Mill", 1);
+	PlayerUI->ToggleObjective(1, false, false);
+	ObjectiveMarkerReturnToMill->Enabled = true;
+	ObjectiveMarkerReturnToMill->DisabledOnReach = true;
+}
+

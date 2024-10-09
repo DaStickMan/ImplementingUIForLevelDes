@@ -34,3 +34,12 @@ void AKeyParentActor::CrowbarTaken()
 }
 
 
+void AKeyParentActor::KeysTaken()
+{
+	if (OnKeysTaken.IsBound())
+	{
+		OnKeysTaken.Broadcast();
+	}
+}
+
+

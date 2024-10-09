@@ -7,6 +7,8 @@
 #include "KeyParentActor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCrowbarTaken);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnKeysTaken);
+
 
 UCLASS()
 class IMPLEMENTINGUIFORLEVELDES_API AKeyParentActor : public AActor
@@ -30,4 +32,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "CrowbarTaken")
 	void CrowbarTaken();
+
+	UPROPERTY(BlueprintAssignable, Category = "OnKeysTaken")
+	FOnKeysTaken OnKeysTaken;
+
+	UFUNCTION(BlueprintCallable, Category = "OnKeysTaken")
+	void KeysTaken();
 };

@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnBridgeControllNoPower();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool KeyFound;
+
 private:
 	// Function to handle overlap events
 	UFUNCTION()
@@ -61,6 +64,10 @@ private:
 	
 	UFUNCTION()
 	void OnCrowbarTakenHandler();
+
+	UFUNCTION()
+	void OnKeyTakenHandler();
+
 
 	// Reference to the TriggerBox in the level
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger", meta = (AllowPrivateAccess = "true"))
@@ -90,6 +97,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerTownHill2;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
+	AObjectiveMarker* ObjectiveMarkerReturnToMill;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GearMachine", meta = (AllowPrivateAccess = "true"))
 	AInteractiveSwitchActor* GearMachine;
 
@@ -101,4 +111,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crowbar", meta = (AllowPrivateAccess = "true"))
 	AKeyParentActor* CrowbarInteractive;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Key", meta = (AllowPrivateAccess = "true"))
+	AKeyParentActor* KeyInteractive;
 };
