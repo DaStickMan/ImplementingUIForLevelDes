@@ -9,6 +9,7 @@
 #include "InteractiveSwitchActor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGearMachineInspected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGearMachineStarted);
 
 UCLASS()
 class IMPLEMENTINGUIFORLEVELDES_API AInteractiveSwitchActor : public AActor
@@ -36,7 +37,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InspectGearMachine();
 
+	// Delegate that gets called when the gear machine is inspected
+	UPROPERTY(BlueprintAssignable, Category = "GearMachine")
+	FOnGearMachineStarted OnGearMachineStarted;
+
+	// Function to be called when the event occurs
+	UFUNCTION(BlueprintCallable)
+	void GearMachineStarted();
+
 	void EnableInteraction(bool enable);
+
+	void CallUnlock();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Collisions")

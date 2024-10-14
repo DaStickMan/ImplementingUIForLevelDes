@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnBridgeControllNoPower();
 
+	UFUNCTION(BlueprintCallable)
+	void OnBridgeExtended();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool KeyFound;
 
@@ -58,6 +61,9 @@ private:
 
 	UFUNCTION()
 	void OnGearMachineInspectedHandler();
+
+	UFUNCTION()
+	void OnGearMachineStartedHandler();
 
 	UFUNCTION()
 	void OnDoorInteractHandler();	
@@ -109,6 +115,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
 	AObjectiveMarker* ObjectiveMarkerRetriveGear;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ObjectiveMarker", meta = (AllowPrivateAccess = "true"))
+	AObjectiveMarker* ObjectiveMarkerFinish;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GearMachine", meta = (AllowPrivateAccess = "true"))
 	AInteractiveSwitchActor* GearMachine;
 
@@ -126,4 +135,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Key", meta = (AllowPrivateAccess = "true"))
 	AKeyParentActor* GearWheelInteractive;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Key", meta = (AllowPrivateAccess = "true"))
+	AInteractiveSwitchActor* InteractiveSwitchBridge;
 };

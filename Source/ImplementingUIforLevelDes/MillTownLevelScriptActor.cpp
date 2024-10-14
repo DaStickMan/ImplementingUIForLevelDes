@@ -45,6 +45,7 @@ void AMillTownLevelScriptActor::BeginPlay()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Binding Gear Machine"));
 			GearMachine->OnGearMachineInspected.AddDynamic(this, &AMillTownLevelScriptActor::OnGearMachineInspectedHandler);
+			GearMachine->OnGearMachineStarted.AddDynamic(this, &AMillTownLevelScriptActor::OnGearMachineStartedHandler);
 		}
 		else
 		{
@@ -108,6 +109,18 @@ void AMillTownLevelScriptActor::OnBridgeControllNoPower()
 		ObjectiveMarkerGearMachine->Enabled = true;
 		GearMachine->EnableInteraction(true);
 	}
+}
+
+void AMillTownLevelScriptActor::OnBridgeExtended()
+{
+	ObjectiveMarkerBridge2->Enabled = false;
+	PlayerUI->CompleteObjective(1);
+	//delay 3s
+	PlayerUI->ToggleObjective(1, true, true);
+	//dealy 2s
+	PlayerUI->SetNewObjective("Cross the bridge", 1);
+	PlayerUI->ToggleObjective(1, false, false);
+	ObjectiveMarkerFinish->Enabled = true;
 }
 
 void AMillTownLevelScriptActor::OnActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
@@ -216,6 +229,20 @@ void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
 	PlayerUI->SetNewObjective("Find the GEAR WHEEL", 1);
 	GearMachineInspected = true;
 }
+
+void AMillTownLevelScriptActor::OnGearMachineStartedHandler()
+{
+	InteractiveSwitchBridge->CallUnlock();
+	ObjectiveMarkerGearMachine->Enabled = false;
+	PlayerUI->CompleteObjective(1);
+	//delay 3s
+	PlayerUI->ToggleObjective(1, true, true);
+	//delay 2s
+	PlayerUI->SetNewObjective("Extend the bridge", 1);
+	PlayerUI->ToggleObjective(1, false, false);
+	ObjectiveMarkerBridge2->Enabled = true;
+}
+
 
 void AMillTownLevelScriptActor::OnDoorInteractHandler()
 {

@@ -31,11 +31,17 @@ void AInteractiveSwitchActor::Tick(float DeltaTime)
 
 void AInteractiveSwitchActor::InspectGearMachine()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Broadcasting"));
-
 	if (OnGearMachineInspected.IsBound())
 	{
 		OnGearMachineInspected.Broadcast();
+	}
+}
+
+void AInteractiveSwitchActor::GearMachineStarted()
+{
+	if (OnGearMachineStarted.IsBound())
+	{
+		OnGearMachineStarted.Broadcast();
 	}
 }
 
@@ -53,6 +59,23 @@ void AInteractiveSwitchActor::EnableInteraction(bool enable)
 			InteractCol->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			InteractRad->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
+	}
+}
+
+void AInteractiveSwitchActor::CallUnlock()
+{
+	// Check if the function exists in the Blueprint
+	FName EventName = "Unlock";  // The name must match the Blueprint event's name
+	UFunction* BlueprintEvent = FindFunction(EventName);
+
+	// If the function is found, we can call it
+	if (BlueprintEvent)
+	{
+		ProcessEvent(BlueprintEvent, nullptr);  // Pass null for parameters if there are no inputs
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Blueprint event 'Unlock' not found!"));
 	}
 }
 
