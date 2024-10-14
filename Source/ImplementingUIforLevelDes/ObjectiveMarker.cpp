@@ -31,9 +31,6 @@ void AObjectiveMarker::BeginPlay()
     }
 
     BoxMarker->OnComponentBeginOverlap.AddDynamic(this, &AObjectiveMarker::OnBoxOverlap);
-
-    SetIsTemporarilyHiddenInEditor(Enabled);
-
 }
 
 // Called every frame
@@ -45,7 +42,7 @@ void AObjectiveMarker::Tick(float DeltaTime)
 
 void AObjectiveMarker::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if (NextObjectMarker)
+    if (NextObjectMarker && Enabled)
     {
         NextObjectMarker->Enabled = true;
         Enabled = false;

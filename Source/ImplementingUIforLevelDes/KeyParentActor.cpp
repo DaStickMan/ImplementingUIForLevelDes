@@ -42,4 +42,12 @@ void AKeyParentActor::KeysTaken()
 	}
 }
 
+void AKeyParentActor::GearWheelTaken()
+{
+	if (OnGearWheelTaken.IsBound())
+	{
+		OnGearWheelTaken.Broadcast();
+	}
+}
+
 

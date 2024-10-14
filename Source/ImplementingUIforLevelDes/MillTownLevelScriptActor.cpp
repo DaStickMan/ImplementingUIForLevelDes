@@ -78,6 +78,16 @@ void AMillTownLevelScriptActor::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The KeyInteractive are not set in the editor!"));
 	}
+
+	if (GearWheelInteractive)
+	{
+		GearWheelInteractive->OnGearWheelTaken.AddDynamic(this, &AMillTownLevelScriptActor::OnGearWheelHandler);
+	}
+	else 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The GearWheelInteractive are not set in the editor!"));
+
+	}
 }
 
 void AMillTownLevelScriptActor::OnBridgeControllNoPower()
@@ -209,22 +219,15 @@ void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
 
 void AMillTownLevelScriptActor::OnDoorInteractHandler()
 {
-	if (GearMachineInspected)
-	{
-		PlayerUI->CompleteObjective(1);
-		PlayerUI->ToggleObjective(1, true, true);
-		PlayerUI->SetNewObjective("Reach the TOWN HALL", 1);
-		PlayerUI->ShowNarrative(true, "The Foreman locked the GEAR WHEEL here in this workshop long ago. If he went to the Town Hall, maybe I can find his key there.", 8);
-		GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
-		ObjectiveMarkerTownHill->Enabled = true;
-		ObjectiveMarkerTownHill->DisabledOnReach = true;
-		DoorLoadingDock->CallUnlockDoor();
-		DoorLoadingDock->CallOpenDoorExternal();
-	}
-	else 
-	{
-
-	}
+	PlayerUI->CompleteObjective(1);
+	PlayerUI->ToggleObjective(1, true, true);
+	PlayerUI->SetNewObjective("Reach the TOWN HALL", 1);
+	PlayerUI->ShowNarrative(true, "The Foreman locked the GEAR WHEEL here in this workshop long ago. If he went to the Town Hall, maybe I can find his key there.", 8);
+	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
+	ObjectiveMarkerTownHill->Enabled = true;
+	ObjectiveMarkerTownHill->DisabledOnReach = true;
+	DoorLoadingDock->CallUnlockDoor();
+	DoorLoadingDock->CallOpenDoorExternal();
 }
 
 void AMillTownLevelScriptActor::OnCrowbarTakenHandler()
@@ -243,8 +246,6 @@ void AMillTownLevelScriptActor::OnCrowbarTakenHandler()
 
 void AMillTownLevelScriptActor::OnKeyTakenHandler()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Chamou"));
-
 	PlayerUI->CompleteObjective(1);
 
 	//delay 3s
@@ -252,7 +253,53 @@ void AMillTownLevelScriptActor::OnKeyTakenHandler()
 	PlayerUI->ToggleObjective(1, true, true);
 	PlayerUI->SetNewObjective("Return to the Mill", 1);
 	PlayerUI->ToggleObjective(1, false, false);
-	ObjectiveMarkerReturnToMill->Enabled = true;
-	ObjectiveMarkerReturnToMill->DisabledOnReach = true;
+
+
+	if (ObjectiveMarkerReturnToMill)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("dELEGATING TRIGGER"));
+
+		ObjectiveMarkerReturnToMill->Enabled = true;
+		ObjectiveMarkerReturnToMill->DisabledOnReach = true;
+		ObjectiveMarkerReturnToMill->BoxMarker->OnComponentBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnObjectiveMarkerReached);
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The ObjectiveMarkerReturnToMill are not set in the editor!"));
+
+	}
 }
 
+void AMillTownLevelScriptActor::OnGearWheelHandler()
+{
+	PlayerUI->CompleteObjective(1);
+	ObjectiveMarkerRetriveGear->Enabled = false;
+
+	//delay 3s
+
+	PlayerUI->ToggleObjective(1, true, true);
+
+	//delay 2s
+
+	PlayerUI->SetNewObjective("Repair the Mill Machinery", 1);
+	PlayerUI->ToggleObjective(1, false, false);
+	ObjectiveMarkerGearMachine->Enabled = true;
+}
+
+void AMillTownLevelScriptActor::OnObjectiveMarkerReached(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ObjectiveMarkerReturnToMill->Enabled = false;
+
+	PlayerUI->CompleteObjective(1);
+
+	//delay 3s
+
+	PlayerUI->ToggleObjective(1, true, true);
+
+
+	//delay 2s
+
+	PlayerUI->SetNewObjective("RETRIEVE THE GEAR WHEEL FROM THE WORKSHOP", 1);
+	ObjectiveMarkerRetriveGear->Enabled = true;
+}

@@ -8,6 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCrowbarTaken);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnKeysTaken);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGearWheelTaken);
 
 
 UCLASS()
@@ -38,4 +39,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "OnKeysTaken")
 	void KeysTaken();
+
+	UPROPERTY(BlueprintAssignable, Category = "OnGearWheelTaken")
+	FOnGearWheelTaken OnGearWheelTaken;
+
+	UFUNCTION(BlueprintCallable, Category = "OnGearWheelTaken")
+	void GearWheelTaken();
 };
