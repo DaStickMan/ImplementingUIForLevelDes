@@ -332,4 +332,6 @@ void AMillTownLevelScriptActor::OnObjectiveMarkerReached(UPrimitiveComponent* Ov
 
 	PlayerUI->SetNewObjective("RETRIEVE THE GEAR WHEEL FROM THE WORKSHOP", 1);
 	ObjectiveMarkerRetriveGear->Enabled = true;
+
+	ObjectiveMarkerReturnToMill->BoxMarker->DestroyComponent();
 }
