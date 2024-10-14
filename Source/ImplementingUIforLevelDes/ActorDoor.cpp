@@ -68,3 +68,11 @@ void AActorDoor::CallOpenDoorExternal()
     }
 }
 
+void AActorDoor::Unlock_Implementation()
+{
+    if (this->GetClass()->ImplementsInterface(UBPI_Interaction::StaticClass()))
+    {
+        IBPI_Interaction::Execute_Unlock(this);
+    }
+}
+

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BPI_Interaction.h" 
 #include "GameFramework/Actor.h"
 #include "KeyParentActor.generated.h"
 
@@ -12,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGearWheelTaken);
 
 
 UCLASS()
-class IMPLEMENTINGUIFORLEVELDES_API AKeyParentActor : public AActor
+class IMPLEMENTINGUIFORLEVELDES_API AKeyParentActor : public AActor, public IBPI_Interaction
 {
 	GENERATED_BODY()
 	
@@ -45,4 +46,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "OnGearWheelTaken")
 	void GearWheelTaken();
+
+	// This overrides the function from the interface
+	virtual void Unlock_Implementation() override;
 };

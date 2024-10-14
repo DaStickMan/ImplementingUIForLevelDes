@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BPI_Interaction.h" 
 #include "GameFramework/Actor.h"
 #include "ActorDoor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDoorInteractLocked);
 
 UCLASS()
-class IMPLEMENTINGUIFORLEVELDES_API AActorDoor : public AActor
+class IMPLEMENTINGUIFORLEVELDES_API AActorDoor : public AActor, public IBPI_Interaction
 {
 	GENERATED_BODY()
 	
@@ -34,4 +35,7 @@ public:
 	void CallUnlockDoor();
 
 	void CallOpenDoorExternal();
+
+	// This overrides the function from the interface
+	virtual void Unlock_Implementation() override;
 };
