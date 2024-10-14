@@ -61,21 +61,10 @@ void AInteractiveSwitchActor::EnableInteraction(bool enable)
 		}
 	}
 }
-
-void AInteractiveSwitchActor::CallUnlock()
+void AInteractiveSwitchActor::Unlock_Implementation()
 {
-	// Check if the function exists in the Blueprint
-	FName EventName = "Unlock";  // The name must match the Blueprint event's name
-	UFunction* BlueprintEvent = FindFunction(EventName);
-
-	// If the function is found, we can call it
-	if (BlueprintEvent)
+	if (this->GetClass()->ImplementsInterface(UBPI_Interaction::StaticClass()))
 	{
-		ProcessEvent(BlueprintEvent, nullptr);  // Pass null for parameters if there are no inputs
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Blueprint event 'Unlock' not found!"));
+		IBPI_Interaction::Execute_Unlock(this);
 	}
 }
-

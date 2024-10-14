@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BPI_Interaction.h" 
 #include <Components/SphereComponent.h>
 #include <Components/BoxComponent.h>
 #include "GameFramework/Actor.h"
@@ -12,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGearMachineInspected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGearMachineStarted);
 
 UCLASS()
-class IMPLEMENTINGUIFORLEVELDES_API AInteractiveSwitchActor : public AActor
+class IMPLEMENTINGUIFORLEVELDES_API AInteractiveSwitchActor : public AActor, public IBPI_Interaction
 {
 	GENERATED_BODY()
 	
@@ -47,8 +48,8 @@ public:
 
 	void EnableInteraction(bool enable);
 
-	void CallUnlock();
-
+	// This overrides the function from the interface
+	virtual void Unlock_Implementation() override;
 private:
 	UPROPERTY(EditAnywhere, Category = "Collisions")
 	UShapeComponent* InteractRad;

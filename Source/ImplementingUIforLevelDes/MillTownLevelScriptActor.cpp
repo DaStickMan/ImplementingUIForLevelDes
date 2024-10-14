@@ -232,7 +232,6 @@ void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
 
 void AMillTownLevelScriptActor::OnGearMachineStartedHandler()
 {
-	InteractiveSwitchBridge->CallUnlock();
 	ObjectiveMarkerGearMachine->Enabled = false;
 	PlayerUI->CompleteObjective(1);
 	//delay 3s
@@ -241,6 +240,10 @@ void AMillTownLevelScriptActor::OnGearMachineStartedHandler()
 	PlayerUI->SetNewObjective("Extend the bridge", 1);
 	PlayerUI->ToggleObjective(1, false, false);
 	ObjectiveMarkerBridge2->Enabled = true;
+	if (InteractiveSwitchBridge)
+	{
+		InteractiveSwitchBridge->Unlock_Implementation();
+	}
 }
 
 
