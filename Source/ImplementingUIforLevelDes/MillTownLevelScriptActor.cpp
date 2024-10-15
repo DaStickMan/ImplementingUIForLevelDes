@@ -246,7 +246,6 @@ void AMillTownLevelScriptActor::OnGearMachineStartedHandler()
 	}
 }
 
-
 void AMillTownLevelScriptActor::OnDoorInteractHandler()
 {
 	PlayerUI->CompleteObjective(1);
@@ -287,12 +286,9 @@ void AMillTownLevelScriptActor::OnKeyTakenHandler()
 
 	if (ObjectiveMarkerReturnToMill)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("dELEGATING TRIGGER"));
-
 		ObjectiveMarkerReturnToMill->Enabled = true;
 		ObjectiveMarkerReturnToMill->DisabledOnReach = true;
 		ObjectiveMarkerReturnToMill->BoxMarker->OnComponentBeginOverlap.AddDynamic(this, &AMillTownLevelScriptActor::OnObjectiveMarkerReached);
-
 	}
 	else
 	{

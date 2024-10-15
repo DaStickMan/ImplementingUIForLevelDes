@@ -31,6 +31,12 @@ public:
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* FadeNarrativeBox = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "TextStyle")
+	FTextBlockStyle CompleteObjectiveTextStyle;
+
+	UPROPERTY(EditAnywhere, Category = "TextStyle")
+	FTextBlockStyle NewObjectiveTextStyle;
 	
 	virtual void NativeOnInitialized() override;
 	void SetNewObjective(FString objective, int nmObjective);
