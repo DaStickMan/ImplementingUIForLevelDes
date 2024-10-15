@@ -9,6 +9,7 @@ void AMillTownLevelScriptActor::InitializeUI()
 	PlayerCharacter = Cast<AInitViewportCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	PlayerUI = PlayerCharacter->InitViewportAndReturn();
 	GearMachineInspected = false;
+	PlayerUI->ClearObjectives();
 	//Calls a new objective after 3s
 	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::OBJ_FindAWayAcross, 3.0f, false);	
 }
@@ -94,6 +95,7 @@ void AMillTownLevelScriptActor::BeginPlay()
 void AMillTownLevelScriptActor::OnBridgeControllNoPower()
 {
 	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 
 	if (PlayerUI && ObjectiveMarkerGearMachine)
 	{
@@ -106,7 +108,7 @@ void AMillTownLevelScriptActor::OnBridgeControllNoPower()
 				GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
 			}, 2, false);
 
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 			{
 				PlayerUI->SetNewObjective("Restart the Mill machinary", 1);
 				PlayerUI->ToggleObjective(1, false, true);
@@ -119,6 +121,7 @@ void AMillTownLevelScriptActor::OnBridgeControllNoPower()
 void AMillTownLevelScriptActor::OnBridgeExtended()
 {
 	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 
 	ObjectiveMarkerBridge2->Enabled = false;
 	PlayerUI->CompleteObjective(1);
@@ -127,7 +130,7 @@ void AMillTownLevelScriptActor::OnBridgeExtended()
 			PlayerUI->ToggleObjective(1, true, true);
 		}, 3, false);
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 		{
 			PlayerUI->SetNewObjective("Cross the bridge", 1);
 			PlayerUI->ToggleObjective(1, false, false);
@@ -140,6 +143,7 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap(AActor* OverlappedActor, AAc
 	if (PlayerUI && ObjectiveMarkerBridge)
 	{
 		FTimerHandle TimerHandle;
+		FTimerHandle TimerHandle2;
 
 		TriggerBox->OnActorBeginOverlap.Clear();
 
@@ -153,7 +157,7 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap(AActor* OverlappedActor, AAc
 				PlayerUI->ToggleObjective(1, true, true);
 			}, 2, false);
 
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 			{
 				PlayerUI->SetNewObjective("Reach the bridge", 1);
 				PlayerUI->ToggleObjective(1, false, false);
@@ -168,6 +172,7 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap2(AActor* OverlappedActor, AA
 	if (PlayerUI && ObjectiveMarkerBridge2)
 	{
 		FTimerHandle TimerHandle;
+		FTimerHandle TimerHandle2;
 
 		TriggerBox2->OnActorBeginOverlap.Clear();
 
@@ -183,7 +188,7 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap2(AActor* OverlappedActor, AA
 				PlayerUI->ToggleObjective(1, true, true);
 			}, 2, false);
 
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 			{
 				PlayerUI->SetNewObjective("Extend the bridge", 1);
 				PlayerUI->ToggleObjective(1, false, false);
@@ -199,11 +204,10 @@ void AMillTownLevelScriptActor::OnActorBeginOverlap3(AActor* OverlappedActor, AA
 
 	if (PlayerUI)
 	{
-		PlayerUI->ToggleObjective(1, true, true);
 
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
-
+				PlayerUI->ToggleObjective(1, true, true);
 				PlayerUI->SetNewObjective("Find a way inside the TOWN HALL", 1);
 				PlayerUI->ToggleObjective(1, false, false);
 			}, 2, false);
@@ -246,11 +250,12 @@ void AMillTownLevelScriptActor::OnGearMachineInspectedHandler()
 		
 	PlayerUI->ShowNarrative(true, "The drive shaft of this machine produces power for the entire mill, but the GEAR WHEEL is missing.", 8);
 	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
+	PlayerUI->ToggleObjective(1, true, true);
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 		{
-			PlayerUI->ToggleObjective(1, true, true);
 			PlayerUI->SetNewObjective("Find the GEAR WHEEL", 1);
+			PlayerUI->ToggleObjective(1, false, false);
 			GearMachineInspected = true;
 		}, 2, false);
 }
@@ -283,10 +288,11 @@ void AMillTownLevelScriptActor::OnGearMachineStartedHandler()
 void AMillTownLevelScriptActor::OnDoorInteractHandler()
 {
 	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 
 	PlayerUI->CompleteObjective(1);
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 		{
 			PlayerUI->ToggleObjective(1, true, true);
 			PlayerUI->SetNewObjective("Reach the TOWN HALL", 1);
@@ -307,6 +313,7 @@ void AMillTownLevelScriptActor::OnDoorInteractHandler()
 void AMillTownLevelScriptActor::OnCrowbarTakenHandler()
 {
 	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 
 	PlayerUI->ToggleObjective(1, true, true);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
@@ -315,7 +322,7 @@ void AMillTownLevelScriptActor::OnCrowbarTakenHandler()
 			GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AMillTownLevelScriptActor::HideNarrativeText, 8.0f, false);
 		}, 1, false);
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 		{
 			PlayerUI->SetNewObjective("Search houses for the Workshop key", 1);
 			PlayerUI->ToggleObjective(1, false, false);
@@ -353,6 +360,7 @@ void AMillTownLevelScriptActor::OnKeyTakenHandler()
 void AMillTownLevelScriptActor::OnGearWheelHandler()
 {
 	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 
 	PlayerUI->CompleteObjective(1);
 	ObjectiveMarkerRetriveGear->Enabled = false;
@@ -362,7 +370,7 @@ void AMillTownLevelScriptActor::OnGearWheelHandler()
 			PlayerUI->ToggleObjective(1, true, true);
 		}, 3, false);
 	
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 		{
 			PlayerUI->SetNewObjective("Repair the Mill Machinery", 1);
 			PlayerUI->ToggleObjective(1, false, false);
@@ -373,6 +381,7 @@ void AMillTownLevelScriptActor::OnGearWheelHandler()
 void AMillTownLevelScriptActor::OnObjectiveMarkerReached(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 
 	ObjectiveMarkerReturnToMill->Enabled = false;
 
@@ -383,7 +392,7 @@ void AMillTownLevelScriptActor::OnObjectiveMarkerReached(UPrimitiveComponent* Ov
 			PlayerUI->ToggleObjective(1, true, true);
 		}, 3, false);
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
 		{
 			PlayerUI->SetNewObjective("RETRIEVE THE GEAR WHEEL FROM THE WORKSHOP", 1);
 			ObjectiveMarkerRetriveGear->Enabled = true;
